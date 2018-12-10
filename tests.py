@@ -16,7 +16,7 @@ class ServerTestCase(TestCase):
 
     def test_checkPlus(self):
         response = self.client.get('/?arg1=3&op=plus&arg2=2')
-        self.assertIn(b'<span id="answer">=5', response.data)
+        self.assertIn(b'<span id="answer">=5</span>', response.data)
 
     def test_checkMinus(self):
         response = self.client.get('/?arg1=5&op=minus&arg2=3')
@@ -30,11 +30,17 @@ class ServerTestCase(TestCase):
         response = self.client.get('/?arg1=10&op=divide&arg2=2')
         self.assertIn(b'<span id="answer">=5.0', response.data)
 
+    # @skip("Тест временно отключен")
+    def test_iskl1(self):
+        response = self.client.get('/?arg1=10&op=divide&arg2=0')
+        self.assertIn(b'<span id="answer">=0', response.data)
+
     def test_iskl2(self):
         response = self.client.get('/?arg1=10&op=plus&arg2="5"')
-        self.assertIn(b'<span id="answer">=15', response.data)
+        self.assertIn('<span id="answer">=Пишите правильно значения!'.encode('utf-8'), response.data)
+
+
 class ResearchTestCase(TestCase):
-    @skip("Тест временно отключен")
     def test_assert_true(self):
         print('-= assertTrue =-')
         self.assertTrue(1 == 1)
